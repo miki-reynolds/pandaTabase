@@ -3,9 +3,11 @@ package com.kaisha.pandatabase;
 import com.kaisha.pandatabase.models.Author;
 import com.kaisha.pandatabase.models.Genre;
 import com.kaisha.pandatabase.models.Manga;
+import com.kaisha.pandatabase.models.Tag;
 import com.kaisha.pandatabase.repositories.AuthorRepository;
 import com.kaisha.pandatabase.repositories.GenreRepository;
 import com.kaisha.pandatabase.repositories.MangaRepository;
+import com.kaisha.pandatabase.repositories.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ public class PandatabaseApplication {
 
     @Autowired
     private MangaRepository mangaRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
     @Autowired
     private GenreRepository genreRepository;
     @Autowired
@@ -36,6 +42,10 @@ public class PandatabaseApplication {
     CommandLineRunner commandLineRunner(MangaRepository mangaRepository) {
         return args -> {
             logger.info("INSIDE THE APP CONTEXT!!");
+            Tag sensei = new Tag("sensei");
+            Tag senpai = new Tag("senpai");
+            tagRepository.saveAll(Arrays.asList(sensei, senpai));
+
             Genre shoujo = new Genre("shoujo");
             genreRepository.save(shoujo);
 
@@ -43,7 +53,10 @@ public class PandatabaseApplication {
             authorRepository.save(author);
 
             Manga m1 = new Manga("Sensei Kunshuu", shoujo, author, 2010);
+            m1.addTag(sensei);
             Manga m2 = new Manga("Mens Life", shoujo, author, 2011);
+            m2.addTag(senpai);
+
             mangaRepository.saveAll(Arrays.asList(m1, m2));
             for (Manga manga : mangaRepository.findAll()) {
                 logger.info(manga.getTitle() + " right here!!");

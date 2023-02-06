@@ -6,6 +6,7 @@ import java.util.Set;
 
 
 @Entity
+@Table(name = "mangas")
 public class Manga {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,10 +14,11 @@ public class Manga {
 
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // switch from LAZY (fields loaded when necessary) to EAGER for Json purpose.
+    @ManyToOne(fetch = FetchType.EAGER)
     private Genre genre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Author author;
 
     private int publishYear;
@@ -72,6 +74,19 @@ public class Manga {
 
     public Set<Tag> getTags() {
         return tags;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.getMangas().add(this);
+    }
+
+    public void removeTag(Long tagId) {
+        Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
+        if (tag != null) {
+            tags.remove(tag);
+            tag.getMangas().remove(this);
+        }
     }
 
     public void setTags(Set<Tag> tags) {

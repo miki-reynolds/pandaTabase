@@ -1,5 +1,7 @@
 package com.kaisha.pandatabase.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -7,6 +9,8 @@ import java.util.Set;
 
 
 @Entity
+@Table(name = "authors")
+@JsonIgnoreProperties({"hypernateLazyInitializer", "handler"})
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,7 +18,8 @@ public class Author {
 
     private String authorName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "author")
     private Set<Manga> mangas = new HashSet<>();
 
     public Author() {
