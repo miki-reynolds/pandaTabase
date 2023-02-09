@@ -37,6 +37,14 @@ public class Tag {
         this.id = id;
     }
 
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
     public Set<Manga> getMangas() {
         return mangas;
     }

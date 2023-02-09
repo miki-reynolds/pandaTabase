@@ -2,6 +2,7 @@ package com.kaisha.pandatabase.controllers;
 
 import com.kaisha.pandatabase.models.Genre;
 import com.kaisha.pandatabase.models.Manga;
+import com.kaisha.pandatabase.models.Tag;
 import com.kaisha.pandatabase.repositories.GenreRepository;
 import com.kaisha.pandatabase.repositories.MangaRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -44,5 +45,34 @@ public class GenreController {
         List<Manga> mangas = mangaRepository.findMangasByGenre(genreQ);
 
         return mangas.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
+
+    @PutMapping("genres/{id}")
+    public ResponseEntity<Genre> updateGenre(@PathVariable("id") long id, @RequestBody Genre genre) {
+        Genre _genre = genreRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Genre not found with id = " + id));
+
+        _genre.setGenreName(genre.getGenreName());
+
+        return new ResponseEntity<>(genreRepository.save(_genre), HttpStatus.OK);
+    }
+
+    @PostMapping("/genres")
+    public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
+        Genre _genre = genreRepository.save(new Genre(genre.getGenreName()));
+
+        return new ResponseEntity<>(_genre, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/genres/{id}")
+    public ResponseEntity<HttpStatus> deleteGenreById(@PathVariable("id") long id) {
+        genreRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/genres")
+    public ResponseEntity<HttpStatus> deleteAllGenres() {
+        genreRepository.deleteAll();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

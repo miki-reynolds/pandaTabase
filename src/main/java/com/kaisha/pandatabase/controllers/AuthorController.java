@@ -1,6 +1,7 @@
 package com.kaisha.pandatabase.controllers;
 
 import com.kaisha.pandatabase.models.Author;
+import com.kaisha.pandatabase.models.Genre;
 import com.kaisha.pandatabase.models.Manga;
 import com.kaisha.pandatabase.repositories.AuthorRepository;
 import com.kaisha.pandatabase.repositories.MangaRepository;
@@ -45,5 +46,34 @@ public class AuthorController {
         List<Manga> mangas = mangaRepository.findMangasByAuthor(author);
 
         return mangas.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
+
+    @PutMapping("authors/{id}")
+    public ResponseEntity<Author> updateAuthor(@PathVariable("id") long id, @RequestBody Author author) {
+        Author _author = authorRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Author not found with id = " + id));
+
+        _author.setAuthorName(author.getAuthorName());
+
+        return new ResponseEntity<>(authorRepository.save(_author), HttpStatus.OK);
+    }
+
+    @PostMapping("/authors")
+    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
+        Author _author = authorRepository.save(new Author(author.getAuthorName()));
+
+        return new ResponseEntity<>(_author, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/authors/{id}")
+    public ResponseEntity<HttpStatus> deleteAuthorById(@PathVariable("id") long id) {
+        authorRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/authors")
+    public ResponseEntity<HttpStatus> deleteAllAuthors() {
+        authorRepository.deleteAll();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

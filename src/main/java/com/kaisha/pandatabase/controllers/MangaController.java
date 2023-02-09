@@ -21,6 +21,14 @@ public class MangaController {
         this.mangaRepository = mangaRepository;
     }
 
+    @PostMapping("/mangas")
+    public ResponseEntity<Manga> createManga(@RequestBody Manga manga) {
+        Manga _manga = mangaRepository.save(new Manga(manga.getTitle(), manga.getGenre(),
+                manga.getAuthor(), manga.getPublishYear()));
+
+        return new ResponseEntity<>(_manga, HttpStatus.CREATED);
+    }
+
     @GetMapping("/mangas")
     public ResponseEntity<List<Manga>> getAllMangas(@RequestParam(required = false) String title) {
         List<Manga> mangas = new ArrayList<>();
@@ -62,5 +70,29 @@ public class MangaController {
         return mangas.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
+    @PutMapping("mangas/{id}")
+    public ResponseEntity<Manga> updateManga(@PathVariable("id") long id, @RequestBody Manga manga) {
+        Manga _manga = mangaRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Manga not found with id = " + id));
 
+        _manga.setTitle(manga.getTitle());
+        _manga.setGenre(manga.getGenre());
+        _manga.setAuthor(manga.getAuthor());
+        _manga.setPublishYear(manga.getPublishYear());
+        // adding/setting tag(s) will be in TagController
+
+        return new ResponseEntity<>(mangaRepository.save(_manga), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/mangas/{id}")
+    public ResponseEntity<HttpStatus> deleteMangaById(@PathVariable("id") long id) {
+        mangaRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/mangas")
+    public ResponseEntity<HttpStatus> deleteAllMangas() {
+        mangaRepository.deleteAll();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

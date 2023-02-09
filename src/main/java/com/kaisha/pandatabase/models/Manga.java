@@ -40,6 +40,15 @@ public class Manga {
         this.publishYear = publishYear;
     }
 
+    public Manga(String title, Genre genre, Author author, int publishYear, Tag tag) {
+        super();
+        this.title = title;
+        this.genre = genre;
+        this.author = author;
+        this.publishYear = publishYear;
+        this.addTag(tag);
+    }
+
     public Long getId() {
         return id;
     }
