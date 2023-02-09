@@ -1,11 +1,11 @@
 package com.kaisha.pandatabase.repositories;
 
 import com.kaisha.pandatabase.models.Tag;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 
-public interface TagRepository extends CrudRepository<Tag, Long> {
-    List<Tag> findTagsByMangasId(Long mangaId);
+public interface TagRepository extends JpaRepository<Tag, Long> {
+    List<Tag> findByTagNameContainingIgnoreCase(String tagName);
 }

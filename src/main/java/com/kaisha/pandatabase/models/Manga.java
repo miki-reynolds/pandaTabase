@@ -23,7 +23,7 @@ public class Manga {
 
     private int publishYear;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "manga_tag",
             joinColumns = {@JoinColumn(name = "manga_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
@@ -76,12 +76,16 @@ public class Manga {
         return tags;
     }
 
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
     public void addTag(Tag tag) {
         this.tags.add(tag);
         tag.getMangas().add(this);
     }
 
-    public void removeTag(Long tagId) {
+    public void removeTag(long tagId) {
         Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
         if (tag != null) {
             tags.remove(tag);
@@ -89,8 +93,9 @@ public class Manga {
         }
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public boolean containTag(long tagId) {
+        Tag tag = this.tags.stream().filter(t -> t.getId() == tagId).findFirst().orElse(null);
+        return this.tags.contains(tag);
     }
 
     public int getPublishYear() {

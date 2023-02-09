@@ -18,7 +18,7 @@ public class Genre {
     private String genreName;
 
     @JsonIgnore
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "genre")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre")
     private Set<Manga> mangas = new HashSet<>();
 
     public Genre() {

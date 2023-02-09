@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 @Entity
-    @Table(name = "tags")
+@Table(name = "tags")
 @JsonIgnoreProperties({"hypernateLazyInitializer", "handler"})
 public class Tag {
     @Id
@@ -18,7 +18,7 @@ public class Tag {
     private String tagName;
 
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "tags")
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "tags")
     private Set<Manga> mangas = new HashSet<>();;
 
     public Tag() {
@@ -39,6 +39,19 @@ public class Tag {
 
     public Set<Manga> getMangas() {
         return mangas;
+    }
+
+    public void addManga(Manga manga) {
+        this.mangas.add(manga);
+        manga.getTags().add(this);
+    }
+
+    public void removeManga(Long mangaId) {
+        Manga manga = this.mangas.stream().filter(m -> m.getId() == mangaId).findFirst().orElse(null);
+        if (manga != null) {
+            mangas.remove(manga);
+            manga.getTags().remove(this);
+        }
     }
 
     public void setMangas(Set<Manga> mangas) {

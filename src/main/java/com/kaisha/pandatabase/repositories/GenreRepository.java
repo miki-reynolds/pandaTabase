@@ -1,7 +1,11 @@
 package com.kaisha.pandatabase.repositories;
 
 import com.kaisha.pandatabase.models.Genre;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface GenreRepository extends CrudRepository<Genre, Long> {
+import java.util.List;
+
+
+public interface GenreRepository extends JpaRepository<Genre, Long> {
+    List<Genre> findByGenreNameContainingIgnoreCase(String genrename);
 }

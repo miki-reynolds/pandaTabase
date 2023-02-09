@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -44,20 +45,33 @@ public class PandatabaseApplication {
             logger.info("INSIDE THE APP CONTEXT!!");
             Tag sensei = new Tag("sensei");
             Tag senpai = new Tag("senpai");
-            tagRepository.saveAll(Arrays.asList(sensei, senpai));
+            Tag genderBender = new Tag("gender bender");
+            Tag medical = new Tag("medical");
+            tagRepository.saveAll(Arrays.asList(sensei, senpai, genderBender, medical));
 
             Genre shoujo = new Genre("shoujo");
-            genreRepository.save(shoujo);
+            Genre josei = new Genre("josei");
+            genreRepository.saveAll(Arrays.asList(shoujo, josei));
 
-            Author author = new Author("Miki");
-            authorRepository.save(author);
+            Author miki = new Author("Miki");
+            Author reynolds = new Author("Reynolds");
+            authorRepository.saveAll(Arrays.asList(miki, reynolds));
 
-            Manga m1 = new Manga("Sensei Kunshuu", shoujo, author, 2010);
-            m1.addTag(sensei);
-            Manga m2 = new Manga("Mens Life", shoujo, author, 2011);
-            m2.addTag(senpai);
+            Manga m1 = new Manga("Seiyuu Academy", shoujo, miki, 2010);
+            Manga m2 = new Manga("Sensei Kunshuu", shoujo, miki, 2011);
+            Manga m3 = new Manga("Mens Life", shoujo, reynolds, 2019);
+            Manga m4 = new Manga("Koi wa Tsuzuku", josei, reynolds, 2020);
+            m1.addTag(genderBender);
+            m2.addTag(sensei);
+            m3.addTag(senpai);
+            m3.addTag(genderBender);
+            m3.addTag(sensei);
+            m3.addTag(medical);
+            logger.info(m1.getTags().toString() + "all m1 tags!!!");
+            logger.info(m2.getTags().toString() + "all m2 tags!!!");
 
-            mangaRepository.saveAll(Arrays.asList(m1, m2));
+            mangaRepository.saveAll(Arrays.asList(m1, m2, m3, m4));
+            logger.info(mangaRepository.findAll().toString());
             for (Manga manga : mangaRepository.findAll()) {
                 logger.info(manga.getTitle() + " right here!!");
             }

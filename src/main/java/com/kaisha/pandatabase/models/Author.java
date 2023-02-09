@@ -19,7 +19,7 @@ public class Author {
     private String authorName;
 
     @JsonIgnore
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "author")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private Set<Manga> mangas = new HashSet<>();
 
     public Author() {
