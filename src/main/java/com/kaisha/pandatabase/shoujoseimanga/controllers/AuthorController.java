@@ -1,10 +1,9 @@
-package com.kaisha.pandatabase.controllers;
+package com.kaisha.pandatabase.shoujoseimanga.controllers;
 
-import com.kaisha.pandatabase.models.Author;
-import com.kaisha.pandatabase.models.Genre;
-import com.kaisha.pandatabase.models.Manga;
-import com.kaisha.pandatabase.repositories.AuthorRepository;
-import com.kaisha.pandatabase.repositories.MangaRepository;
+import com.kaisha.pandatabase.shoujoseimanga.models.Author;
+import com.kaisha.pandatabase.shoujoseimanga.models.Manga;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.AuthorRepository;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.MangaRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:8888")
-
-@RestController
+//@CrossOrigin(origins = "http://localhost:8888")
 //@RequestMapping("/api")
+@RestController
 public class AuthorController {
     private final AuthorRepository authorRepository;
     private final MangaRepository mangaRepository;

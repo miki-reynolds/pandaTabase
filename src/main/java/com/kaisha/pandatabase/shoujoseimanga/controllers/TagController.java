@@ -1,9 +1,9 @@
-package com.kaisha.pandatabase.controllers;
+package com.kaisha.pandatabase.shoujoseimanga.controllers;
 
-import com.kaisha.pandatabase.models.Manga;
-import com.kaisha.pandatabase.models.Tag;
-import com.kaisha.pandatabase.repositories.MangaRepository;
-import com.kaisha.pandatabase.repositories.TagRepository;
+import com.kaisha.pandatabase.shoujoseimanga.models.Manga;
+import com.kaisha.pandatabase.shoujoseimanga.models.Tag;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.MangaRepository;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.TagRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:8888")
-@RestController
+//@CrossOrigin(origins = "http://localhost:8888")
 //@RequestMapping("/api")
+@RestController
 public class TagController {
     private final TagRepository tagRepository;
     private final MangaRepository mangaRepository;

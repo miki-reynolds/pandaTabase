@@ -1,4 +1,4 @@
-package com.kaisha.pandatabase.models;
+package com.kaisha.pandatabase.shoujoseimanga.models;
 
 import jakarta.persistence.*;
 import java.util.HashSet;
@@ -12,6 +12,7 @@ public class Manga {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(nullable=false)
     private String title;
 
     // switch from LAZY (fields loaded when necessary) to EAGER for Json purpose.
@@ -49,11 +50,11 @@ public class Manga {
         this.addTag(tag);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

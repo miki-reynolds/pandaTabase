@@ -1,9 +1,9 @@
-package com.kaisha.pandatabase.repositories;
+package com.kaisha.pandatabase.shoujoseimanga.repositories;
 
-import com.kaisha.pandatabase.models.Author;
-import com.kaisha.pandatabase.models.Genre;
-import com.kaisha.pandatabase.models.Manga;
-import com.kaisha.pandatabase.models.Tag;
+import com.kaisha.pandatabase.shoujoseimanga.models.Author;
+import com.kaisha.pandatabase.shoujoseimanga.models.Genre;
+import com.kaisha.pandatabase.shoujoseimanga.models.Manga;
+import com.kaisha.pandatabase.shoujoseimanga.models.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

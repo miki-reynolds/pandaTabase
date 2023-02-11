@@ -1,4 +1,4 @@
-package com.kaisha.pandatabase.models;
+package com.kaisha.pandatabase.shoujoseimanga.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,6 +15,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(nullable=false)
     private String tagName;
 
     @JsonIgnore

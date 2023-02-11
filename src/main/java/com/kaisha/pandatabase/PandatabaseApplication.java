@@ -1,13 +1,15 @@
 package com.kaisha.pandatabase;
 
-import com.kaisha.pandatabase.models.Author;
-import com.kaisha.pandatabase.models.Genre;
-import com.kaisha.pandatabase.models.Manga;
-import com.kaisha.pandatabase.models.Tag;
-import com.kaisha.pandatabase.repositories.AuthorRepository;
-import com.kaisha.pandatabase.repositories.GenreRepository;
-import com.kaisha.pandatabase.repositories.MangaRepository;
-import com.kaisha.pandatabase.repositories.TagRepository;
+import com.kaisha.pandatabase.security.models.User;
+import com.kaisha.pandatabase.security.repositories.UserRepository;
+import com.kaisha.pandatabase.shoujoseimanga.models.Author;
+import com.kaisha.pandatabase.shoujoseimanga.models.Genre;
+import com.kaisha.pandatabase.shoujoseimanga.models.Manga;
+import com.kaisha.pandatabase.shoujoseimanga.models.Tag;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.AuthorRepository;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.GenreRepository;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.MangaRepository;
+import com.kaisha.pandatabase.shoujoseimanga.repositories.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
-import java.util.List;
 
 
 @SpringBootApplication
@@ -34,6 +35,9 @@ public class PandatabaseApplication {
     private GenreRepository genreRepository;
     @Autowired
     private AuthorRepository authorRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(PandatabaseApplication.class, args);
@@ -74,6 +78,15 @@ public class PandatabaseApplication {
             logger.info(mangaRepository.findAll().toString());
             for (Manga manga : mangaRepository.findAll()) {
                 logger.info(manga.getTitle() + " right here!!");
+            }
+//            $2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue
+            userRepository.save(new User("miki",
+                    "miki","USER"));
+            userRepository.save(new User("panda",
+                    "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
+
+            for (User user : userRepository.findAll()) {
+                logger.info(user.getUsername() + " exists!!");
             }
         };
     }
