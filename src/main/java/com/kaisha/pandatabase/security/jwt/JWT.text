@@ -1,0 +1,19 @@
+Spring Boot security provides authentication and authorization features to secure an application. The security implementation in Spring Boot is based on the Spring Security framework, which is a widely adopted security framework for Java applications.
+
+In the case of JWT (JSON Web Tokens), the following steps occur when securing an application:
+
+User authentication: When a user logs into the application, the application sends a request to the authentication server to validate the user's credentials. The authentication server checks the user's credentials against the data stored in a database, such as a user name and password.
+
+Token generation: If the user's credentials are valid, the authentication server generates a JWT, which contains information about the user and the user's permissions. This token is then sent back to the application.
+
+Token storage: The token is stored in the client side, typically in local storage or a cookie, for further use.
+
+Authorization: For each subsequent request made by the user to the application, the token is sent along with the request in the Authorization header. The application uses the JWT to retrieve the user's information and permissions.
+
+Token validation: The application sends a request to the authentication server to validate the token. The authentication server checks the signature of the token to make sure it has not been tampered with and also checks if the token has expired.
+
+Processing the request: If the token is valid, the application processes the request. If the token is invalid or expired, the application denies the request.
+
+Logout: When the user logs out, the token is removed from the client side, effectively ending the user's session.
+
+This is a high-level overview of how JWT works with Spring Boot security. To implement JWT in a Spring Boot application, you need to create a JWT token generator, a filter to extract the token from the incoming request, and a filter to validate the token. Additionally, you need to configure Spring Security to use these filters.

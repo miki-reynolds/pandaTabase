@@ -1,18 +1,15 @@
 package com.kaisha.pandatabase.security.repositories;
 
-import com.kaisha.pandatabase.security.models.User;
+import com.kaisha.pandatabase.security.models.ERole;
+import com.kaisha.pandatabase.security.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 import java.util.Optional;
 
 
 @RepositoryRestResource(exported = false)
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findUserByUsername(String username);
-
-    Boolean existsByUsername(String username);
-    Boolean existsByEmail(String email);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Optional<Role> findRoleByName(ERole name);
 }
 
 

@@ -1,33 +1,53 @@
 package com.kaisha.pandatabase.security.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable=false, updatable=false)
     private long id;
 
-    @Column(nullable=false, unique=true)
+    @NotBlank
+    @Size(max = 20)
     private String username;
 
-    @Column(nullable=false)
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
+
+    @NotBlank
+    @Size(max = 150)
     private String password;
 
-    @Column(nullable=false)
-    private String role;
+    @ManyToMany(fetch =  FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String password, String role) {
+    public User(String username, String email, String password) {
         super();
         this.username = username;
+        this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public long getId() {
@@ -46,6 +66,14 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -54,11 +82,24 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(Long roleId) {
+        Role role = this.roles.stream().filter(r -> r.getId() == roleId).findFirst().orElse(null);
+        if (role != null) {
+            roles.remove(role);
+            role.getUsers().remove(this);
+        }
     }
 }

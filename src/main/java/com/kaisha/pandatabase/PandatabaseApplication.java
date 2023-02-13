@@ -1,6 +1,9 @@
 package com.kaisha.pandatabase;
 
+import com.kaisha.pandatabase.security.models.ERole;
+import com.kaisha.pandatabase.security.models.Role;
 import com.kaisha.pandatabase.security.models.User;
+import com.kaisha.pandatabase.security.repositories.RoleRepository;
 import com.kaisha.pandatabase.security.repositories.UserRepository;
 import com.kaisha.pandatabase.shoujoseimanga.models.Author;
 import com.kaisha.pandatabase.shoujoseimanga.models.Genre;
@@ -38,6 +41,8 @@ public class PandatabaseApplication {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(PandatabaseApplication.class, args);
@@ -79,14 +84,23 @@ public class PandatabaseApplication {
             for (Manga manga : mangaRepository.findAll()) {
                 logger.info(manga.getTitle() + " right here!!");
             }
-//            $2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue
-            userRepository.save(new User("miki",
-                    "miki","USER"));
-            userRepository.save(new User("panda",
-                    "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
 
-            for (User user : userRepository.findAll()) {
-                logger.info(user.getUsername() + " exists!!");
+            Role userR = new Role(ERole.ROLE_USER);
+            Role adminR = new Role(ERole.ROLE_ADMIN);
+            roleRepository.saveAll(Arrays.asList(userR, adminR));
+//            $2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue
+//            $2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW
+            // Username: miki, password: user
+            User user = new User("myusername", "simpa@gmail.com","$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue");
+            // Username: panda, password: admin
+            User admin = new User("myadminname", "panda@gmail.com", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW");
+            user.addRole(userR);
+            admin.addRole(adminR);
+            userRepository.save(user);
+            userRepository.save(admin);
+
+            for (User u : userRepository.findAll()) {
+                logger.info(u.getUsername() + " exists!!");
             }
         };
     }

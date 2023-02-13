@@ -14,7 +14,7 @@ import java.util.List;
 
 
 //@CrossOrigin(origins = "http://localhost:8888")
-//@RequestMapping("/api")
+@RequestMapping("/api")
 @RestController
 public class TagController {
     private final TagRepository tagRepository;
